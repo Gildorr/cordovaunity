@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cz.wmp.geofun.UnityPlayerActivity;
 /**
  * This class echoes a string called from JavaScript.
  */
@@ -14,19 +15,17 @@ public class CordovaUnity extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("coolMethod")) {
+        if (action.equals("launchUnity")) {
             String message = args.getString(0);
-            this.coolMethod(message, callbackContext);
+            this.launchUnity(message, callbackContext);
             return true;
         }
         return false;
     }
 
-    private void coolMethod(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
+    private void launchUnity(String message, CallbackContext callbackContext) {
+        Context context=this.cordova.getActivity().getApplicationContext();
+        Intent i = new Intent(context, UnityPlayerActivity.class);
+        this.cordova.getActivity().startActivity(i);
     }
 }
